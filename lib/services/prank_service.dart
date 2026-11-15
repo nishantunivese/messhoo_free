@@ -39,6 +39,8 @@ class PrankService {
     await prefs.setBool(_keySoundMuted, !current);
   }
 
+  Future<void> toggleMute() => toggleSoundMuted();
+
   String getRandomRoast() {
     final list = RoastMessages.messages;
     int nextIndex;
