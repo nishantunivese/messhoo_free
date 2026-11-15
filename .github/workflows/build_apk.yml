@@ -1,0 +1,51 @@
+name: Build Messhoo Free Android APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Clean and Re-generate Official Android Project
+        run: |
+          rm -rf android/
+          flutter create . --platforms=android --org com.messhoofree.prank
+          python3 prepare_android.py --project-only
+          echo "=== Patched build file check ==="
+          cat android/app/build.gradle* | grep -E "minSdk|multiDex|compileSdk|lint|isMinifyEnabled|minifyEnabled"
+          echo "=== Patched MainActivity.kt check ==="
+          find android/app/src/main/kotlin -name "MainActivity.kt" -exec cat {} +
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Patch Dependencies Cache for compileSdk 36
+        run: python3 prepare_android.py --cache-only
+
+      - name: Build Android Release APK
+        run: flutter build apk --release --android-skip-build-dependency-validation
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MesshooFree-Release-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
