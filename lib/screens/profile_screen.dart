@@ -27,7 +27,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final roastCount = ref.watch(roastProvider);
+    final roastState = ref.watch(roastProvider);
+    final roastCount = roastState.count;
     final cartState = ref.watch(cartProvider);
     final wishlistState = ref.watch(wishlistProvider);
 
