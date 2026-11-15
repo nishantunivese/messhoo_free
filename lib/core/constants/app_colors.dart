@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  // Aliases for compatibility
+  static const Color primary = Color(0xFFE91E63);
+  static const Color secondary = Color(0xFF9C27B0);
+  static const LinearGradient primaryGradient = LinearGradient(colors: brandGradient);
+
   // Brand Primary (Meesho/Fashion Pink & Purple)
   static const Color primaryPink = Color(0xFFE91E63);
   static const Color primaryPinkDark = Color(0xFFC2185B);
