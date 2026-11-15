@@ -19,7 +19,7 @@ class MainNavigationScreen extends ConsumerStatefulWidget {
 class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
   int _currentIndex = 0;
 
-  void _onCategorySelected(String? category) {
+  void _onCategorySelected() {
     setState(() => _currentIndex = 0);
   }
 
@@ -29,7 +29,7 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
     final wishlistState = ref.watch(wishlistProvider);
 
     final screens = [
-      HomeScreen(onCategorySelected: _onCategorySelected),
+      const HomeScreen(),
       CategoriesScreen(onCategorySelected: _onCategorySelected),
       const WishlistScreen(),
       const CartScreen(),
